@@ -3,7 +3,14 @@ const { User } = require("../models");
 const updateUser = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const user = await User.update({}, { where: { id: id } });
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(400).json({
+                message: "user not found",
+                success: false,
+            });
+        }
+        user = await User.update({}, { where: { id: id } });
         return res.status(200).json({
             success: true,
             message: "user updated",
@@ -21,6 +28,12 @@ const getOneUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(400).json({
+                message: "user not found",
+                success: false,
+            });
+        }
 
         return res.status(200).json({
             success: true,
@@ -55,6 +68,12 @@ const deleteUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(400).json({
+                message: "user not found",
+                success: false,
+            });
+        }
 
         await user.destroy();
         return res.status(200).json({

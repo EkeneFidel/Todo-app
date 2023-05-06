@@ -1,18 +1,19 @@
 "use strict";
 const { Model } = require("sequelize");
+const bcrypt = require("bcrypt");
+const useBcrypt = require("sequelize-bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
+        userName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
+            isEmail: true,
         },
         id: {
             type: DataTypes.UUID,
@@ -20,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
         },
         password: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
+            allowNull: false,
         },
     });
 
@@ -29,5 +31,12 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "userId",
         });
     };
+
+    useBcrypt(User),
+        {
+            field: "password",
+            rounds: 12,
+            compare: "authenticate",
+        };
     return User;
 };

@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users", verifyToken, userRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", verifyToken, taskRouter);
 
 app.get("/", (req, res) => {

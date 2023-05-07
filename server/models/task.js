@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
         },
+        userId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         isCompleted: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -17,11 +21,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
     });
-
-    Task.associate = (models) => {
-        Task.belongsTo(models.User, {
-            foreignKey: "userId",
-        });
-    };
     return Task;
 };

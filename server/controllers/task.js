@@ -2,12 +2,16 @@ const { Task } = require("../models");
 
 const addTask = async (req, res, next) => {
     try {
-        const { isCompleted, description } = req.body;
-        const task = await Task.create({ isCompleted, description });
+        const { id } = req.user;
+        const { description } = req.body;
+        const task = await Task.create({
+            userId: id,
+            description: description,
+        });
         return res.status(200).json({
             success: true,
             message: "task added",
-            task: task,
+            task: task.toJSON(),
         });
     } catch (error) {
         return res.status(400).json({
@@ -28,16 +32,17 @@ const updateTask = async (req, res, next) => {
                 success: false,
             });
         }
-        task = await Task.update(
+        const updatedTask = await Task.update(
             { isCompleted, description },
             { where: { id: id } }
         );
         return res.status(200).json({
             success: true,
             message: "task updated",
-            task: task,
+            task: updatedTask,
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             message: error.message,
             success: false,
@@ -71,7 +76,8 @@ const getOneTask = async (req, res, next) => {
 
 const getAllTasks = async (req, res, next) => {
     try {
-        const tasks = await Task.findAll();
+        const { id } = req.user;
+        const tasks = await Task.findAll({ where: { userId: id } });
         return res.status(200).json({
             success: true,
             message: "tasks found",
@@ -102,6 +108,7 @@ const deleteTask = async (req, res, next) => {
             message: "task deleted",
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             message: error.message,
             success: false,

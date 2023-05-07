@@ -26,12 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    User.associate = (models) => {
-        User.hasMany(models.Task, {
-            foreignKey: "userId",
-        });
-    };
-
     useBcrypt(User),
         {
             field: "password",

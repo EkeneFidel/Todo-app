@@ -3,8 +3,14 @@ const { generateAuthToken } = require("../utils/auth.utils");
 
 const signup = async (req, res, next) => {
     try {
-        const userPayload = req.body;
-        const user = await User.create(userPayload);
+        const { userName, email, password } = req.body;
+        if (!userName || !email || !password) {
+            return res.status(500).json({
+                success: false,
+                message: "Credentials missing",
+            });
+        }
+        const user = await User.create({ userName, email, password });
         const token = generateAuthToken(user);
         return res.status(200).json({
             success: true,
@@ -23,6 +29,19 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
+        if (!email) {
+            return res.status(500).json({
+                success: false,
+                message: "Provide an email",
+            });
+        }
+
+        if (!password) {
+            return res.status(500).json({
+                success: false,
+                message: "Provide a password",
+            });
+        }
 
         const user = await User.findOne({
             where: { email: email },
@@ -52,6 +71,7 @@ const login = async (req, res, next) => {
             token: token,
         });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "An error occured",

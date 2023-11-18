@@ -46,7 +46,7 @@ Object.keys(db).forEach((modelName) => {
 
 const connectToDb = async () => {
     try {
-        await sequelize.sync({ force: false });
+        await sequelize.sync({ force: true });
         await sequelize.authenticate().then(() => {
             console.log("Successfully connected to db");
         });

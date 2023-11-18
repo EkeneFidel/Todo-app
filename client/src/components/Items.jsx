@@ -45,7 +45,7 @@ const Items = ({ task, getData }) => {
             const response = await fetch(
                 `${import.meta.env.VITE_SERVERURL}/tasks/${task.id}`,
                 {
-                    method: "PATCH",
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${authToken}`,

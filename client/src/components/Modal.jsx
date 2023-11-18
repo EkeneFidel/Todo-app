@@ -41,7 +41,7 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
             const response = await fetch(
                 `${import.meta.env.VITE_SERVERURL}/${task.id}`,
                 {
-                    method: "PATCH",
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${authToken}`,

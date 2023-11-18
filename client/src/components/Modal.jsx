@@ -39,7 +39,7 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
         e.preventDefault();
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_SERVERURL}/${task.id}`,
+                `${import.meta.env.VITE_SERVERURL}/tasks/${task.id}`,
                 {
                     method: "PUT",
                     headers: {
